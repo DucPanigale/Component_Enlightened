@@ -35,16 +35,47 @@ public class EnlightenedNumbers {
     }
     public ArrayList<BigInteger> InnerExecute(BigInteger rangeFrom, BigInteger rangeTo) {
         ArrayList<BigInteger> enlightenedNumbers = new ArrayList<>();
-        BigInteger i = rangeFrom;
-        while(i.compareTo(rangeTo) < 0){
-            ArrayList<BigInteger> primeFactors = tdFactors(i);
-            if ((checkFirstDigits(primeFactors,i)) != null && (checkFirstDigits(primeFactors,i)).compareTo(new BigInteger("8")) > 0){
-                enlightenedNumbers.add(checkFirstDigits(primeFactors, i));
+
+        BigInteger counter = rangeFrom;
+
+        do {
+            if (((checkIfNumbersMatch(tdFactors(counter), counter)) != null) && counter.compareTo(new BigInteger("8")) > 0){
+                enlightenedNumbers.add(counter);
             }
-            // i++
-            i = i.add(new BigInteger("1"));
-        }
+            counter = counter.add(BigInteger.valueOf(1));
+        } while (counter.compareTo(rangeTo) < 0);
+
         return enlightenedNumbers;
+    }
+
+
+    public BigInteger checkIfNumbersMatch(ArrayList<BigInteger> primeFactors, BigInteger value){
+        ArrayList<String> digits = getDigits(value);
+
+        StringBuilder builder = new StringBuilder();
+
+        String factors = "";
+        String number = "";
+
+        for (int i = 0; i < primeFactors.size(); i++) {
+            builder.append(primeFactors.get(i));
+        }
+
+        factors = builder.toString();
+
+        builder.setLength(0);
+        if (factors.length() < digits.size()) {
+            for (int i = 0; i < factors.length(); i++) {
+                builder.append(digits.get(i));
+            }
+
+            number = builder.toString();
+        }
+        if (!(factors.equals(number))) {
+            return null;
+        }
+
+        return value;
     }
 
 // get prime factors -- works
@@ -83,51 +114,6 @@ public class EnlightenedNumbers {
             }
         }
         return fs;
-    }
-
-
-// static entfernt
-    // number n is enlightened if it begins with the concatenation of its distinct prime factors
-    private BigInteger checkFirstDigits(ArrayList<BigInteger> primeFactors, BigInteger initialValue){
-        // for each prime factor
-        ArrayList<String> digitList = getDigits(initialValue);
-        int index = 0;
-
-
-        for (BigInteger factor : primeFactors) {
-            if (factor.toString().length() == 1) {
-                if ((index < 2) && (factor.equals(new BigInteger(digitList.get(index))))) {
-                    return null;
-                }
-                index++;
-            } else {
-                String number = "";
-                for (int i = index; i < factor.toString().length(); i++) {
-                    number += digitList.get(i);
-                }
-                if ((index < 2) && (factor.equals(new BigInteger(number)))) {
-                    return null;
-                }
-                index += factor.toString().length();
-            }
-        }
-
-        return initialValue;
-        /*// for each prime factor
-        for (BigInteger step : primeFactors) {
-
-            // todo: change this for e.g. 2176
-            if ((index < 2) && (step.equals(new BigInteger(digitList.get(index)))))
-            {
-                return null;
-            }
-
-           // if(step.compareTo(new BigInteger(digitList.get(index))) != 0) {
-           //     return null;
-           // }
-            index++;
-        }
-        return initialValue;*/
     }
 
 
