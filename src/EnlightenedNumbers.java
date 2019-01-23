@@ -102,7 +102,7 @@ public class EnlightenedNumbers {
                 index++;
             } else {
                 String number = "";
-                for (int i = index; i <= factor.toString().length(); i++) {
+                for (int i = index; i < factor.toString().length(); i++) {
                     number += digitList.get(i);
                 }
                 if ((index < 2) && (factor.equals(new BigInteger(number)))) {
