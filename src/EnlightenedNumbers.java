@@ -92,7 +92,28 @@ public class EnlightenedNumbers {
         // for each prime factor
         ArrayList<String> digitList = getDigits(initialValue);
         int index = 0;
-        // for each prime factor
+
+
+        for (BigInteger factor : primeFactors) {
+            if (factor.toString().length() == 1) {
+                if ((index < 2) && (factor.equals(new BigInteger(digitList.get(index))))) {
+                    return null;
+                }
+                index++;
+            } else {
+                String number = "";
+                for (int i = index; i <= factor.toString().length(); i++) {
+                    number += digitList.get(i);
+                }
+                if ((index < 2) && (factor.equals(new BigInteger(number)))) {
+                    return null;
+                }
+                index += factor.toString().length();
+            }
+        }
+
+        return initialValue;
+        /*// for each prime factor
         for (BigInteger step : primeFactors) {
 
             // todo: change this for e.g. 2176
@@ -106,7 +127,7 @@ public class EnlightenedNumbers {
            // }
             index++;
         }
-        return initialValue;
+        return initialValue;*/
     }
 
 
@@ -138,5 +159,4 @@ public class EnlightenedNumbers {
         }
         return true;
     }
-
 }
